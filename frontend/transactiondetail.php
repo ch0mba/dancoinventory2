@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My Web Page</title>
-        <link rel="stylesheet" href="styles1.css">
+        <link rel="stylesheet" href="../styles/transactiondetail.css">
     </head>
 
     <body>
@@ -14,28 +14,9 @@
         <div class="Transaction">
             <label for ="transactionCode">Transaction Code:</label>
             <select id="transactionCode" id="TransactionCode">
-            <?php
-                // Connect to the database and retrieve active options from the detail table
-                include "connection.php";
-
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-
-                $sql = "SELECT * FROM detail WHERE active = 1";
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
-                    }
-                } else {
-                    echo "0 results";
-                }
-
-                $conn->close();
-            ?>
-            
+               
+            <option value="1"></option>
+            <option value="2"></option>
             </select>  
 
         </div>
@@ -75,6 +56,6 @@
             <input type="hidden" id="items" name="itemInput">
             <button type="submit">Submit</button>
         </form>
-        <script src="script.js"></script>
+        <script src="../scripts/transactiondetail.js"></script>
     </body>
 </html>
