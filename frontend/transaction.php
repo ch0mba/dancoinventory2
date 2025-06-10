@@ -42,17 +42,10 @@
                     <div class="form-group">
                         <label for="stockLocation">Stock Location:</label>
 
-                        <select id ="stockLocation" name="stockLocation" action =../api/get_stocklocation method="GET" required >
+                        <select id ="stockLocation" name="stockLocation"  required >
                             <option value="">Select a Stock Location </option>
-                            <option value="1">Select a Stock Location </option>
-                        <?php
-                            // Loop through the fetched stock locations and create options
-                            // Assuming each fetched row has a 'stockLocation' key
-                            foreach ($stockLocationsData as $location) {
-                                // htmlspecialchars() is used to prevent XSS attacks
-                                echo "<option value=\"" . htmlspecialchars($location['stockLocation']) . "\">" . htmlspecialchars($location['stockLocation']) . "</option>";
-                            }
-                            ?>
+                            <option value="1">Main Factory </option>
+                       
                         </select>
                         
                     </div>
