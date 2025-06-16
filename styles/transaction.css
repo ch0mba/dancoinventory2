@@ -1,77 +1,376 @@
-/* The Modal (background) */
+/* General Body and HTML Reset */
+body {
+    font-family: 'Inter', sans-serif; /* A modern, clean font */
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6; /* Light grey background */
+    color: #333; /* Dark text for readability */
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+/* --- Transaction Container and Header --- */
+.Transaction.container {
+    width: 100%;
+    max-width: 900px; /* Limit width for larger screens */
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.Transaction.container h1 {
+    margin: 0;
+    color: #2c3e50; /* Darker blue-grey for headings */
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+/* --- Add Transaction Button --- */
+#addTransactionBtn {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); /* Green gradient */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); /* Subtle shadow */
+}
+
+#addTransactionBtn:hover {
+    background: linear-gradient(135deg, #45a049 0%, #3e8e41 100%); /* Darker green on hover */
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+#addTransactionBtn i {
+    font-size: 1.2em;
+}
+
+/* --- Modal Styles --- */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px; /* Location of the box */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
 }
 
-/* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto; /* 15% from the top and centered */
-    padding: 20px;
+    padding: 30px 40px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 700px; /* Limit maximum width */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    position: relative; /* Needed for the close button positioning */
+    width: 90%; /* Responsive width */
+    max-width: 600px; /* Max width for larger screens */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    position: relative; /* For positioning the close button */
+    animation: fadeIn 0.3s ease-out; /* Fade-in animation */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    max-height: 90vh; /* Limit height to allow scrolling if content is long */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8em;
 }
 
 /* The Close Button */
 .close {
     color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
     position: absolute;
-    right: 20px;
-    top: 10px;
+    top: 15px;
+    right: 25px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #333;
     text-decoration: none;
-    cursor: pointer;
 }
 
-/* Form Group Styling (optional, based on your existing CSS) */
+/* --- Form Styling --- */
+.popupform {
+    padding: 10px 0; /* Add some padding around the form */
+}
+
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Stack label and input */
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
 }
 
-.form-group input[type="text"] {
-    width: calc(100% - 22px); /* Adjust for padding and border */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box; /* Crucial for consistent width */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-appearance: none; /* Remove default browser styling for select */
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #f9f9f9;
 }
 
-button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    border-color: #6a90ff; /* Blue focus border */
+    box-shadow: 0 0 0 3px rgba(106, 144, 255, 0.2); /* Light blue glow */
+    outline: none; /* Remove default outline */
+    background-color: #ffffff;
+}
+
+/* Custom arrow for select (optional, if default looks bad) */
+.form-group select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23555555" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 35px; /* Make space for the arrow */
+}
+
+
+/* Form Action Buttons */
+form button[type="reset"],
+form button[type="submit"] {
+    padding: 12px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
+    font-size: 1.05em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 15px; /* Space from inputs */
+    margin-right: 10px; /* Space between buttons */
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+form button[type="reset"] {
+    background-color: #e7e9eb; /* Light grey for reset */
+    color: #555;
+}
+
+form button[type="reset"]:hover {
+    background-color: #d1d3d6;
+    color: #333;
+    transform: translateY(-1px);
+}
+
+form button[type="submit"] {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Blue gradient for submit */
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+form button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%); /* Darker blue on hover */
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* --- Message Box Styling --- */
+.message {
+    padding: 15px;
+    margin-top: 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    display: none; /* Hidden by default, shown by JS */
+    opacity: 0; /* Initial opacity for fade-in effect */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Success message */
+.message[style*="background-color: rgb(212, 237, 218)"] { /* Check for specific green color */
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error message */
+.message[style*="background-color: rgb(248, 215, 218)"] { /* Check for specific red color */
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.show { /* Class to add via JS to fade in */
+    opacity: 1;
+}
+
+/* --- Table Styling (Basic) --- */
+#itemTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    font-size: 0.9em;
+    text-align: left;
+    display: none; /* Hide if no data is shown yet */
+}
+
+#itemTable thead th {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 12px 15px;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 700;
+}
+
+#itemTable tbody tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+#itemTable tbody tr:nth-of-type(even) {
+    background-color: #f8f9fa;
+}
+
+#itemTable tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+#itemTable tbody td {
+    padding: 10px 15px;
+    vertical-align: top;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .Transaction.container {
+        flex-direction: column;
+        align-items: flex-start; /* Align header and button to start */
+        padding: 20px;
+    }
+
+    .Transaction.container h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    #addTransactionBtn {
+        width: 100%; /* Full width button on small screens */
+        justify-content: center; /* Center icon and text */
+        padding: 15px 20px;
+    }
+
+    .modal-content {
+        width: 95%; /* Wider modal on small screens */
+        padding: 20px 25px;
+        max-height: 95vh; /* Allow more height */
+    }
+
+    .modal-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .close {
+        font-size: 28px;
+        top: 10px;
+        right: 15px;
+    }
+
+    form button[type="reset"],
+    form button[type="submit"] {
+        width: calc(50% - 5px); /* Half width for buttons, with space */
+        margin-right: 0; /* Remove right margin */
+    }
+
+    form button[type="reset"] {
+        margin-right: 10px; /* Add margin back between the two buttons */
+    }
+
+    form button[type="reset"],
+    form button[type="submit"] {
+        margin-bottom: 10px; /* Space between buttons if stacked */
+    }
+
+    /* Stack buttons vertically if they don't fit side-by-side */
+    form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .Transaction.container {
+        padding: 15px;
+    }
+
+    .Transaction.container h1 {
+        font-size: 1.5em;
+    }
+
+    .modal-content {
+        padding: 15px 20px;
+    }
+
+    .form-group input[type="text"],
+    .form-group select {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    form button[type="reset"],
+    form button[type="submit"] {
+        width: 100%; /* Full width for buttons on very small screens */
+        margin-right: 0;
+        margin-bottom: 10px; /* Space between stacked buttons */
+    }
+}
+
+/* Animation for the message box */
+.message {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.message.show {
+    opacity: 1;
 }
