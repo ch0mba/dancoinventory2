@@ -72,7 +72,6 @@ body {
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
-    display: flex; /* Use flexbox for centering */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
 }
@@ -90,6 +89,54 @@ body {
     box-sizing: border-box; /* Include padding in element's total width and height */
     max-height: 90vh; /* Limit height to allow scrolling if content is long */
     overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* --- New Searchable Dropdown Styles --- */
+.searchable-container {
+    position: relative;
+    width: 100%;
+}
+
+.searchable-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding doesn't add to total width */
+    font-size: 1rem;
+}
+
+.searchable-dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100%;
+    max-height: 200px; /* Limit height and make scrollable */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 10; /* Ensure it appears above other elements */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    margin-top: 5px; /* Small space between input and dropdown */
+}
+
+.searchable-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.searchable-dropdown-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.searchable-dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.searchable-dropdown-item.selected { /* Style for selected item, if you want */
+    background-color: #e2e6ea;
+    font-weight: bold;
 }
 
 @keyframes fadeIn {

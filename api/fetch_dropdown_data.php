@@ -47,6 +47,18 @@ if ($result_trntypes) {
     $data['trntypes_error'] = "Error fetching transaction types: " . $conn->error;
 }
 
+
+// Fetch Transaction form Invmovements database 
+$sql_transactions = "SELECT id, trnType,trnRef, warehouse, department, officer, storeLocation  FROM invmovements WHERE status='Ongoing'  ORDER BY id DESC"; // Assuming 'ID' is the column in 'transactioN ID'
+$result_transactions = $conn->query($sql_transactions);
+if ($result_transactions) {
+    $data['transactions'] = [];
+    while ($row = $result_transactions->fetch_assoc()) {
+        $data['transactions'][] = $row;
+    }
+} else {
+    $data['transactions_error'] = "Error fetching transaction " . $conn->error;
+}
 echo json_encode($data);
 
 // Close the database connection

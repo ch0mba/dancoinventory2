@@ -26,8 +26,36 @@
         </div>
     </div>
 
-    <!-- The Modal/ Popup Form for Adding a New Transaction -->
-    <div id="addTransactionModal" class="modal">
+  
+
+    <!-- Container for the main transactions table -->
+    <div class="table-container">
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Ref</th>
+                    <th>Warehouse</th>
+                    <th>Stock Location</th>
+                    <th>Department</th>
+                    <th>Truck No</th>
+                    <th>Officer</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Transaction data will be loaded here dynamically by JavaScript -->
+            </tbody>
+        </table>
+        <!-- Message box for table-related feedback (e.g., no transactions found, error loading) -->
+        <div id="tableMessageBox" class="message"></div>
+    </div>
+
+      <!-- The Modal/ Popup Form for Adding a New Transaction -->
+      <div id="addTransactionModal" class="modal">
         <div class="modal-content">
             <!-- Close button for this modal -->
             <span class="close add-modal-close">&times;</span>
@@ -49,10 +77,13 @@
 
                     <div class="form-group">
                         <label for="warehouse">Warehouse:</label>
-                        <!-- Dropdown will be populated dynamically by JavaScript -->
-                        <select id="warehouse" name="warehouse" required>
-                            <option value="">Select a Warehouse</option>
-                        </select>
+                        <div class="searchable-container">
+                            <input type="text" id="warehouse_search_input" class="searchable-input" placeholder="Type to search warehouse" autocomplete="off" required>
+                            <div id="warehouse_dropdown" class="searchable-dropdown">
+
+                            </div>
+                            <input type="hidden" id="warehouse" name="warehouse">
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -105,32 +136,6 @@
             <!-- Message box for Close Transaction form feedback -->
             <div id="closeMessageBox" class="message"></div>
         </div>
-    </div>
-
-    <!-- Container for the main transactions table -->
-    <div class="table-container">
-        <table id="itemTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Ref</th>
-                    <th>Warehouse</th>
-                    <th>Stock Location</th>
-                    <th>Department</th>
-                    <th>Truck No</th>
-                    <th>Officer</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Transaction data will be loaded here dynamically by JavaScript -->
-            </tbody>
-        </table>
-        <!-- Message box for table-related feedback (e.g., no transactions found, error loading) -->
-        <div id="tableMessageBox" class="message"></div>
     </div>
 
     <!-- Link to the JavaScript file that handles interactivity and data fetching -->

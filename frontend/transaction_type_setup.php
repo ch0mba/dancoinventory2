@@ -10,10 +10,10 @@
 
 <body>
     <div class="container">
-        <h1>Stock Location Setup</h1>
+        <h1>Transaction Type Setup</h1>
         <form id="transcationForm" action="../backend/transaction_type.php" method="POST">
             <div class="mb-3">
-                <label for="stocklocation" >Enter Stock Location:</label>
+                <label for="Transaction _type" >Enter Transaction Type:</label>
                 <input type="text"  id="transaction_type" name="transaction_type" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
