@@ -11,11 +11,10 @@ if (!isset($conn) || $conn->connect_error) {
     exit();
 }
 
-$transactions = [];
-
 // Prepare SQL statement to fetch all transactions from invmovements table
 // Ordering by 'time' in descending order to show latest transactions first
-$sql = "SELECT id, trnType, trnRef, warehouse, department, truckNo, officer, storeLocation, time, status FROM invmovements ORDER BY time DESC";
+$sql = "SELECT id, trnType, trnRef, warehouse, department, truckNo, officer, storeLocation, time,  status FROM invmovements ORDER BY time DESC";
+
 
 $result = $conn->query($sql);
 

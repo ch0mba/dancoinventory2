@@ -23,6 +23,17 @@ if ($result_warehouses) {
     $data['warehouses_error'] = "Error fetching warehouses: " . $conn->error;
 }
 
+//Fetch stockcode
+$sql_stockcode = "SELECT DISTINCT stockcode FROM stockcodes ORDER BY stockcode ASC"; // Assuming 'stockcode' is the column in 'stockcodes'
+$result_stockcode = $conn->query($sql_stockcode);
+if ($result_stockcode) {
+    $data['stockcode'] = [];
+    while ($row = $result_stockcode->fetch_assoc()) {
+        $data['stockcode'][] = $row['stockcode'];
+    }
+} else {
+    $data['stockcode_error'] = "Error fetching stockcode: " . $conn->error;
+}
 // Fetch Stock Locations
 $sql_stocklocations = "SELECT DISTINCT stockLocation FROM stocklocation ORDER BY stockLocation ASC"; // Assuming 'locationName' is the column in 'stocklocation'
 $result_stocklocations = $conn->query($sql_stocklocations);
