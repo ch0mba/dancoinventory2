@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const trnTypeSelect = document.getElementById('trnType');
     const stockLocationSelect = document.getElementById('stockLocation');
 
-    // Main page table filter elements
-    const filterWarehouseSelect = document.getElementById('filterWarehouse'); // Still needed for the main table filter
-    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    // Main page table filter elements (retained for now, though less critical with separate tables)
+    // const filterWarehouseSelect = document.getElementById('filterWarehouse'); // You might reconsider needing this if tables are split by status
+    // const resetFilterBtn = document.getElementById('resetFilterBtn'); // Same as above
 
     // NEW: Elements for the Searchable Warehouse Dropdown in the form
     const warehouseSearchInput = document.getElementById('warehouse_search_input');
@@ -31,10 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const hiddenWarehouseInput = document.getElementById('warehouse'); // This carries the value for form submission
     let allWarehouses = []; // To store the full list of warehouses (e.g., ['Warehouse A', 'Warehouse B'])
 
-    // Table elements for displaying transactions
-    const itemTableBody = document.querySelector('#itemTable tbody');
-    const itemTable = document.getElementById('itemTable');
-    const tableMessageBox = document.getElementById('tableMessageBox');
+    // Table elements for displaying transactions - UPDATED REFERENCES
+    const ongoingItemTableBody = document.getElementById('ongoingItemTableBody');
+    const ongoingItemTable = document.getElementById('ongoingItemTable');
+    const ongoingTableMessageBox = document.getElementById('ongoingTableMessageBox');
+
+    const completedItemTableBody = document.getElementById('completedItemTableBody');
+    const completedItemTable = document.getElementById('completedItemTable');
+    const completedTableMessageBox = document.getElementById('completedTableMessageBox');
 
     // --- Helper Functions ---
 
@@ -127,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 allWarehouses = data.warehouses; // Store the full list
                 populateSearchableWarehouseDropdown(allWarehouses); // Populate the custom searchable dropdown
 
-                // // Populate the main page filter dropdown
+                // // Populate the main page filter dropdown (optional, based on your final UI needs)
                 // filterWarehouseSelect.innerHTML = '<option value="">All Warehouses</option>';
                 // data.warehouses.forEach(warehouse => {
                 //     const filterOption = document.createElement('option');
@@ -155,12 +159,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Fetches transaction data from the backend and populates the itemTable.
+     * Fetches transaction data from the backend and populates the appropriate tables.
      * @param {string} [warehouseFilter=''] Optional: The warehouse name to filter by.
      */
     async function fetchAndDisplayTransactions(warehouseFilter = '') {
-        itemTableBody.innerHTML = ''; // Clear existing table data
-        hideMessage(tableMessageBox); // Hide any previous messages
+        ongoingItemTableBody.innerHTML = ''; // Clear existing ongoing table data
+        completedItemTableBody.innerHTML = ''; // Clear existing completed table data
+        hideMessage(ongoingTableMessageBox); // Hide any previous messages
+        hideMessage(completedTableMessageBox);
 
         try {
             let url = '../api/fetch_transaction.php';
@@ -173,42 +179,122 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (data.error) {
                 console.error("Error fetching transactions:", data.error);
-                displayMessage(tableMessageBox, "Error loading transactions: " + data.error, 'error');
-                itemTable.style.display = 'none';
+                displayMessage(ongoingTableMessageBox, "Error loading ongoing transactions: " + data.error, 'error');
+                displayMessage(completedTableMessageBox, "Error loading completed transactions: " + data.error, 'error');
+                ongoingItemTable.style.display = 'none';
+                completedItemTable.style.display = 'none';
                 return;
             }
 
-            if (data.length === 0) {
-                displayMessage(tableMessageBox, "No transactions found yet." + (warehouseFilter ? ` for '${warehouseFilter}'` : ''), 'info');
-                itemTable.style.display = 'none';
-                return;
-            }
+            let ongoingCount = 0;
+            let completedCount = 0;
 
             data.forEach(transaction => {
-                const row = itemTableBody.insertRow();
-                row.insertCell().textContent = transaction.id;
-                row.insertCell().textContent = transaction.trnType;
-                row.insertCell().textContent = transaction.trnRef;
-                row.insertCell().textContent = transaction.warehouse;
-                row.insertCell().textContent = transaction.storeLocation;
-                row.insertCell().textContent = transaction.department;
-                row.insertCell().textContent = transaction.truckNo || '-';
-                row.insertCell().textContent = transaction.officer;
-                row.insertCell().textContent = transaction.time;
-                row.insertCell().textContent = transaction.status;
+                if (transaction.status === 'Ongoing') {
+                    ongoingCount++;
+                    const row = ongoingItemTableBody.insertRow();
+                    row.insertCell().textContent = transaction.id;
+                    row.insertCell().textContent = transaction.trnType;
+                    row.insertCell().textContent = transaction.trnRef;
+                    row.insertCell().textContent = transaction.warehouse;
+                    row.insertCell().textContent = transaction.storeLocation;
+                    row.insertCell().textContent = transaction.department;
+                    row.insertCell().textContent = transaction.truckNo || '-';
+                    row.insertCell().textContent = transaction.officer;
+                    row.insertCell().textContent = transaction.time;
+                    row.insertCell().textContent = transaction.status;
 
-                if (transaction.status === 'Completed') {
-                    row.classList.add('status-completed');
-                } else if (transaction.status === 'Ongoing') {
-                    row.classList.add('status-ongoing');
+                    // Add action buttons for ongoing transactions (e.g., Edit, Delete)
+                    const actionsCell = row.insertCell();
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.classList.add('edit-btn'); // Add a class for styling
+                    editButton.addEventListener('click', () => editTransaction(transaction.id)); // Implement edit function
+                    actionsCell.appendChild(editButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('delete-btn'); // Add a class for styling
+                    deleteButton.addEventListener('click', () => deleteTransaction(transaction.id)); // Implement delete function
+                    actionsCell.appendChild(deleteButton);
+
+                } else if (transaction.status === 'Completed') {
+                    completedCount++;
+                    const row = completedItemTableBody.insertRow();
+                    row.insertCell().textContent = transaction.id;
+                    row.insertCell().textContent = transaction.trnType;
+                    row.insertCell().textContent = transaction.trnRef;
+                    row.insertCell().textContent = transaction.warehouse;
+                    row.insertCell().textContent = transaction.storeLocation;
+                    row.insertCell().textContent = transaction.department;
+                    row.insertCell().textContent = transaction.truckNo || '-';
+                    row.insertCell().textContent = transaction.officer;
+                    row.insertCell().textContent = transaction.time;
+                    row.insertCell().textContent = transaction.status;
+                    // No actions for completed transactions as per your request
                 }
             });
-            itemTable.style.display = 'table';
+
+            // Display messages and tables based on counts
+            if (ongoingCount === 0) {
+                displayMessage(ongoingTableMessageBox, "No ongoing transactions found." + (warehouseFilter ? ` for '${warehouseFilter}'` : ''), 'info');
+                ongoingItemTable.style.display = 'none';
+            } else {
+                ongoingItemTable.style.display = 'table';
+                hideMessage(ongoingTableMessageBox);
+            }
+
+            if (completedCount === 0) {
+                displayMessage(completedTableMessageBox, "No completed transactions found." + (warehouseFilter ? ` for '${warehouseFilter}'` : ''), 'info');
+                completedItemTable.style.display = 'none';
+            } else {
+                completedItemTable.style.display = 'table';
+                hideMessage(completedTableMessageBox);
+            }
 
         } catch (error) {
             console.error("Failed to fetch transactions:", error);
-            displayMessage(tableMessageBox, "Network error: Could not load transaction data.", 'error');
-            itemTable.style.display = 'none';
+            displayMessage(ongoingTableMessageBox, "Network error: Could not load ongoing transaction data.", 'error');
+            displayMessage(completedTableMessageBox, "Network error: Could not load completed transaction data.", 'error');
+            ongoingItemTable.style.display = 'none';
+            completedItemTable.style.display = 'none';
+        }
+    }
+
+    // --- New: Implement Edit and Delete Functions (Placeholders) ---
+    function editTransaction(transactionId) {
+        console.log('Edit transaction with ID:', transactionId);
+        // Here you would typically open a modal pre-filled with transaction data
+        // and allow the user to modify it, then send an AJAX request to update.
+        alert(`Implement edit functionality for transaction ID: ${transactionId}`);
+    }
+
+    async function deleteTransaction(transactionId) {
+        if (!confirm(`Are you sure you want to delete transaction ID: ${transactionId}?`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch('../api/delete_transaction.php', { // You'll need to create this PHP file
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: transactionId })
+            });
+
+            const result = await response.json(); // Assuming your PHP returns JSON
+
+            if (response.ok && result.success) {
+                displayMessage(ongoingTableMessageBox, `Transaction ${transactionId} deleted successfully.`, 'success');
+                fetchAndDisplayTransactions(); // Refresh tables after deletion
+            } else {
+                console.error("Server error:", result.error || result);
+                displayMessage(ongoingTableMessageBox, `Error deleting transaction ${transactionId}: ${result.error || 'Unknown error'}`, 'error');
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+            displayMessage(ongoingTableMessageBox, "Network error: Could not delete transaction.", 'error');
         }
     }
 
@@ -291,16 +377,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // (If its 'name' attribute matches, FormData will pick it up automatically)
 
         try {
-            const response = await fetch('.../backend/tranaction.php', {
+            const response = await fetch('../backend/transaction.php', {
                 method: 'POST',
                 body: formData
             });
 
-            const result = await response.text();
+            const result = await response.text(); // Assuming your PHP returns plain text success/error
 
             if (response.ok) {
                 displayMessage(addMessageBox, result, 'success');
-                fetchAndDisplayTransactions(filterWarehouseSelect.value);
+                fetchAndDisplayTransactions(); // Refresh both tables
                 setTimeout(() => {
                     addTransactionModal.style.display = 'none';
                     hideMessage(addMessageBox);
@@ -329,10 +415,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: formData
             });
-            const result = await response.text();
+            const result = await response.text(); // Assuming your PHP returns plain text success/error
             if (response.ok) {
                 displayMessage(closeMessageBox, result, 'success');
-                fetchAndDisplayTransactions(filterWarehouseSelect.value);
+                fetchAndDisplayTransactions(); // Refresh both tables
                 setTimeout(() => {
                     closeTransactionModal.style.display = 'none';
                     hideMessage(closeMessageBox);
@@ -379,6 +465,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial fetch of transactions and dropdowns when the page loads
     fetchAndPopulateDropdowns().then(() => {
-        fetchAndDisplayTransactions();
+        fetchAndDisplayTransactions(); // Call without filter to load all
     });
 });

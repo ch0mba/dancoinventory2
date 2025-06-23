@@ -29,29 +29,50 @@
   
 
     <!-- Container for the main transactions table -->
+    <h2>Ongoing Transactions (Editable)</h2>
+        <div class="table-container">
+            <div id="ongoingTableMessageBox" class="message-box" style="display: none;"></div>
+            <table id="ongoingItemTable" class="item-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>TRN Type</th>
+                        <th>TRN Ref</th>
+                        <th>Warehouse</th>
+                        <th>Store Location</th>
+                        <th>Department</th>
+                        <th>Truck No</th>
+                        <th>Officer</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th> </tr>
+                </thead>
+                <tbody id="ongoingItemTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+    <h2>Completed Transactions</h2>
     <div class="table-container">
-        <table id="itemTable">
+        <div id="completedTableMessageBox" class="message-box" style="display: none;"></div>
+        <table id="completedItemTable" class="item-table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Type</th>
-                    <th>Ref</th>
+                    <th>Trn Type</th>
+                    <th>Trn Ref</th>
                     <th>Warehouse</th>
-                    <th>Stock Location</th>
+                    <th>Store Location</th>
                     <th>Department</th>
                     <th>Truck No</th>
                     <th>Officer</th>
                     <th>Time</th>
                     <th>Status</th>
-                    <th>Update</th>
                 </tr>
-            </thead>
-            <tbody>
-                <!-- Transaction data will be loaded here dynamically by JavaScript -->
+        </thead>
+        <tbody id="completedItemTableBody">
             </tbody>
-        </table>
-        <!-- Message box for table-related feedback (e.g., no transactions found, error loading) -->
-        <div id="tableMessageBox" class="message"></div>
+    </table>
     </div>
 
       <!-- The Modal/ Popup Form for Adding a New Transaction -->
