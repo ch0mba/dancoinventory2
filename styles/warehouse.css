@@ -1,0 +1,179 @@
+
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Import Bootstrap Icons (if any icons are planned for this page in the future) */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+/* CSS Variables for consistent styling */
+:root {
+    --body-bg: #f4f7f6; /* Light gray for background */
+    --primary-color: #3498db; /* A vibrant blue for primary elements */
+    --primary-hover-color: #2980b9; /* Darker blue on hover */
+    --text-color: #333; /* Dark text for light backgrounds */
+    --light-text-color: #666; /* Lighter text for secondary info */
+    --border-color: #e0e0e0; /* Light border for separation */
+    --card-bg: #ffffff; /* White for card backgrounds/forms */
+    --input-border: #ccc; /* Input border color */
+    --focus-border: var(--primary-color); /* Input focus border color */
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Box shadow for elements */
+
+    /* Transitions */
+    --transition-fast: all 0.2s ease;
+    --transition-medium: all 0.3s ease;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--body-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+/* Container for the form */
+.container {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    margin-top: 50px; /* Space from top of the page */
+    width: 100%;
+    max-width: 500px; /* Constrain width for better readability */
+    box-sizing: border-box;
+    text-align: center; /* Center content within the container */
+}
+
+h1 {
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+/* Form Group Styling (Using .mb-3 from your HTML) */
+.mb-3 {
+    margin-bottom: 20px;
+    text-align: left; /* Align labels and inputs to the left */
+}
+
+.mb-3 label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--light-text-color);
+}
+
+.mb-3 input[type="text"] {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 12px 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-color);
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    transition: border-color var(--transition-fast);
+    margin-bottom: 15px; /* Space between inputs */
+}
+
+.mb-3 input[type="text"]:focus {
+    border-color: var(--focus-border);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Light blue shadow on focus */
+}
+
+/* Button Styling */
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-medium), transform var(--transition-fast);
+    text-decoration: none;
+    margin-top: 20px; /* Space above the button */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+/* Result message styling */
+#result {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    /* Styles for success/error messages will be applied by JavaScript */
+}
+
+/* Example styles for success/error (to be added by JS) */
+.result-success {
+    background-color: #d4edda; /* Light green */
+    color: #155724; /* Dark green text */
+    border: 1px solid #c3e6cb;
+}
+
+.result-error {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red text */
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 25px;
+        margin-top: 30px;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+        margin-bottom: 25px;
+    }
+
+    .mb-3 input[type="text"] {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        width: 100%; /* Full width button on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+}

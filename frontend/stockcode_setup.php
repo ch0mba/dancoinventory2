@@ -46,7 +46,7 @@
         </div>
     </div>
 
-
-    <script src="../scripts/stockcode.js"></script>
     <script src="../scripts/stockcode_table.js"></script> <!-- New JS for table search -->
+    <script src="../scripts/stockcode.js"></script>
+    
 </html>
