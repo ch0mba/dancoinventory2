@@ -1,76 +1,262 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); /* Adding Poppins font */
 
 
+:root {
+    /* Colors */
+    --body-bg: #f4f7f6; /* Light gray for background */
+    --sidebar-bg: #2c3e50; /* Dark blue-gray for sidebar */
+    --primary-color: #3498db; /* A vibrant blue for primary elements */
+    --primary-hover-color: #2980b9; /* Darker blue on hover */
+    --text-color: #ecf0f1; /* Light text for dark backgrounds */
+    --dark-text-color: #333; /* Dark text for light backgrounds */
+    --card-bg: #ffffff; /* White for card backgrounds */
+    --border-color: #e0e0e0; /* Light border for separation */
+    --accent-color-1: #27ae60; /* Green for success/positive data */
+    --accent-color-2: #e67e22; /* Orange for warnings/attention */
+    --accent-color-3: #c0392b; /* Red for critical info/errors */
 
-:root{
-
-    --body-color: white;
-    --sidebar-color:rgb(182, 182, 182);
-    --primary-color:rgb(255, 115, 0);
-    --primary-color-light: #cacaca;
-    --toggle-color: #ff0202;
-    --text-color:black;
-
-    /* ===Transistion === */
-    --tran-02: all 0,2s ease;
-    --tran-03: all 0,3s ease;
-    --tran-04: all 0,4s ease;
-    --tran-05: all 0,5s ease;
-    
-
+    /* Transitions */
+    --transition-fast: all 0.2s ease;
+    --transition-medium: all 0.3s ease;
+    --transition-slow: all 0.4s ease;
 }
 
-body{
-    height: 100vh;
-    background: var(--body-color);
+/* Base Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--body-bg);
+    color: var(--dark-text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex; /* Using flexbox for layout */
 }
 
-
+/* Sidebar Styling */
 .sidebar {
-    position: fixed;
-    width: 250px;
-    top: 0;
-    left: 0;
-    height: 100%;
-    display:flex;
-    background-color: #ff7b00;
-
-} 
-.sidebar .text{
-    font-size:16px;
-    font-weight: 500;
+    width: 300px;
+    height: 100vh; /* Full height sidebar */
+    background-color: var(--sidebar-bg);
     color: var(--text-color);
-    transition: var(--tran-05);
-}  
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /*Stack items vertically */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
 
-.sidebar li{
-    height: 50px;
-    margin-top: 10px;
+.sidebar .text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-color);
+    transition: var(--transition-medium);
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+}
+
+.sidebar li {
     list-style: none;
+    margin-bottom: 5px; /* Spacing between menu items */
+}
+
+.sidebar li .search-box {
+    margin-bottom: 20px;
+    padding: 0 15px; /* Adjust padding for search */
+}
+
+.sidebar li .search-box a {
     display: flex;
     align-items: center;
-   
-
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+    border-radius: 5px;
+    padding: 8px 10px;
 }
-.sidebar li .icon{
+
+.sidebar li .search-box input {
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    padding-left: 10px;
+    outline: none;
+    width: 100%;
+}
+
+.sidebar li .search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar li .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 60px;
-    font-size: 20px;
+    min-width: 40px; /* Smaller icon width */
+    font-size: 1.2rem; /* Adjusted icon size */
+    color: var(--text-color);
+    transition: var(--transition-medium);
 }
-.sidebar li a{
+
+.sidebar li a {
     text-decoration: none;
     color: var(--text-color);
-    width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
-    padding-left: 10px;
-    transition: var(--tran-03);
+    padding: 10px 15px; /* Increased padding for better click area */
+    border-radius: 5px;
+    transition: var(--transition-medium);
+    margin: 0 10px; /* Horizontal margin for menu items */
 }
-.container{
-    margin-left: 250px;
-    padding: 20px;
-    background-color: var(--primary-color-light);
+
+.sidebar li a:hover {
+    background-color: var(--primary-color);
+    color: var(--card-bg); /* White text on hover */
+}
+
+/* Active navigation link */
+.sidebar li.active a {
+    background-color: var(--primary-color);
+    color: var(--card-bg);
+    font-weight: 500;
+}
+
+/* Sub-menu styling */
+.sidebar .sub-menu {
+    list-style: none;
+    padding-left: 0; /* Remove default padding */
+    margin-top: 5px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out; /* Smooth collapse/expand */
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker background for sub-menu */
+    border-radius: 5px;
+    margin-left: 20px; /* Indent sub-menu */
+}
+
+.sidebar .nav-link:hover .sub-menu {
+    max-height: 200px; /* Adjust as needed to fit content */
+    transition: max-height 0.5s ease-in; /* Smooth collapse/expand */
+}
+
+.sidebar .sub-menu .nav-sub-links a {
+    padding: 8px 15px 8px 30px; /* Adjust padding for sub-links */
+    font-size: 0.9rem;
+}
+
+.sidebar .sub-menu .nav-sub-links a:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+/* Main Content Area */
+.container {
+    flex-grow: 1; /* Allow container to take remaining space */
+    padding: 30px;
+    background-color: var(--body-bg);
+}
+
+.content h1 {
+    color: var(--dark-text-color);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.content p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* Dashboard Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 25px; /* Space between cards */
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    text-align: center;
+    transition: var(--transition-medium);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 150px;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    color: var(--dark-text-color);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.card .value {
+    font-size: 2.5rem; /* Larger font for values */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: auto; /* Push value to the bottom if content is dynamic */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px; /* Collapse sidebar */
+    }
+
+    .sidebar .text,
+    .sidebar .search-box input {
+        display: none; /* Hide text and input */
+    }
+
+    .sidebar li a {
+        justify-content: center; /* Center icons */
+        margin: 0;
+        padding: 10px;
+    }
+
+    .sidebar li .icon {
+        min-width: unset;
+        font-size: 1.5rem;
+    }
+
+    .sidebar .sub-menu {
+        position: absolute; /* Allow sub-menu to float */
+        left: 80px;
+        top: auto;
+        background-color: var(--sidebar-bg);
+        z-index: 100;
+        min-width: 200px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar .nav-link:not(:hover) .sub-menu {
+        max-height: 0; /* Ensure sub-menu is hidden when not hovered */
+    }
+
+
+    .container {
+        margin-left: 80px; /* Adjust content margin */
+        padding: 15px;
+    }
+
+    .content h1 {
+        font-size: 1.8rem;
+    }
+
+    .cards {
+        grid-template-columns: 1fr; /* Stack cards on small screens */
+    }
 }
