@@ -23,5 +23,30 @@
         <div id="result" class="mt-3"></div>
     </div>
 
+    <!-- Selection for Displaying Existing stock code -->
+    <div class="search-section">
+            <input type="text" id="stockCodeSearch" placeholder="Search Stock Code or Description..." class="searchable-input">
+            <i class="bi bi-search search-icon"></i>
+        </div>
+
+        <div class="table-container">
+            <table id="stockcodeTable">
+                <thead>
+                    <tr>
+                        <th>Stock Code</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Stock codes will be loaded here by JavaScript -->
+                </tbody>
+            </table>
+            <p id="noResults" style="text-align: center; margin-top: 20px; display: none;">No stock codes found.</p>
+        </div>
+    </div>
+
+
     <script src="../scripts/stockcode.js"></script>
+    <script src="../scripts/stockcode_table.js"></script> <!-- New JS for table search -->
 </html>
